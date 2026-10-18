@@ -1,0 +1,56 @@
+# Elementary Coder
+
+A coding-agent skill. It asks the model to write readable, self-documenting code: full names, living comments, explicit structure, and a project-root `TESTING.md` so later agents can see what is proven.
+
+Works with **Grok**, **OpenCode**, and **MiMoCode**. Copy `SKILL.md` into the skills directory for the harness you use.
+
+## Install
+
+The skill directory must be named `elementary-coder` and contain `SKILL.md`.
+
+**Grok**
+
+```bash
+git clone https://github.com/archerallstars/elementary-coder.git ~/.grok/skills/elementary-coder
+```
+
+**OpenCode**
+
+```bash
+git clone https://github.com/archerallstars/elementary-coder.git ~/.config/opencode/skills/elementary-coder
+```
+
+**MiMoCode**
+
+```bash
+git clone https://github.com/archerallstars/elementary-coder.git ~/.config/mimocode/skills/elementary-coder
+```
+
+Update later with `git -C <skill-dir> pull`.
+
+Ask the agent to use it: `/elementary-coder`, or “apply elementary-coder standards”.
+
+## What it requires
+
+The full rules live in [SKILL.md](SKILL.md). In short:
+
+| Rule | Intent |
+|---|---|
+| 1–5, 11–12 | Descriptive names and comments that stay true to the code |
+| 6–8 | File section order, queued local I/O, concurrency when it is safe |
+| 9–10 | Upgrade skeletons in place; edit legacy code only in the changed area |
+| 13 | Read the real SDK in the project before calling it |
+| 14–22 | Explicit `else`, no unused params, grouped functions, no passthrough wrappers |
+| 23 | Never put secrets in comments |
+| 24 | Every agent commit records harness + plan/build model + prompt/round summaries |
+| 25 | Every project keeps a living `TESTING.md` at the repo root |
+
+Rule 24 fills harness version from `opencode --version`, `grok --version`, or `mimo --version`, then records plan vs build model for that harness.
+
+Rule 25: check a box only after a live pass in the real environment. Unit tests are a gate. Use generic fixture names (`portrait.jpg`, `sample.txt`). Agent files such as `AGENTS.md` may point at `TESTING.md`; they must not copy the boxes.
+
+This repository’s own outline is [TESTING.md](TESTING.md).
+
+## License
+
+[Unlicense](LICENSE) — public domain. Use it however you want.
