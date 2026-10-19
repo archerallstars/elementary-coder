@@ -43,11 +43,11 @@ The full rules live in [SKILL.md](SKILL.md). In short:
 | 14–22 | Explicit `else`, no unused params, grouped functions, no passthrough wrappers |
 | 23 | Never put secrets in comments |
 | 24 | Every agent commit records harness + plan/build model + prompt/round summaries |
-| 25 | Every project keeps a living `TESTING.md` at the repo root |
+| 25 | Living `TESTING.md`: live-verified feature boxes; a round covers only what it touched |
 
 Rule 24 fills harness version from `opencode --version`, `grok --version`, or `mimo --version`, then records plan vs build model for that harness.
 
-Rule 25: check a box only after a live pass in the real environment. Unit tests are a gate. Use generic fixture names (`portrait.jpg`, `sample.txt`). Agent files such as `AGENTS.md` may point at `TESTING.md`; they must not copy the boxes.
+Rule 25: boxes track live-verified features across sessions and agents (a layer besides git). A round covers only the boxes its code changes touch. Check a touched box after a live pass in the real environment. Unit tests are a gate. Use generic fixture names (`portrait.jpg`, `sample.txt`). Agent files such as `AGENTS.md` may point at `TESTING.md`; they must not copy the boxes.
 
 This repository’s own outline is [TESTING.md](TESTING.md).
 

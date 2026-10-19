@@ -363,13 +363,17 @@ Comments are living documentation. Whenever you generate or modify code, you mus
         The signature block (`🦮 Harness:`, `🤖 Plan Model:`, `🤖 Build Model:`, `💬 Prompt Summary:`, `📋 Round Summary:`) must always appear verbatim at the end of the message body, regardless of what else is in the body above it. Do not omit or reorder the labels. Harness comes first, then the two model lines, then Prompt Summary, then Round Summary. For multi-line Prompt Summary / Round Summary, the label line is still present; only the body moves under it.
 
 25. **Project-root TESTING.md is mandatory**  
-    Every project must keep a living `TESTING.md` at the repository root. It is the outline of every feature's working state. Use it on every verification pass. This is required for agentic workflow: the agent must know what exists, what has been live-verified, and what is still unproven.
+    Every project must keep a living `TESTING.md` at the repository root. It is the outline of **which features are live-verified**. Use it on every verification pass. This is required for agentic workflow: later sessions and other agents/models must see what is proven. Git history records code; `TESTING.md` records live checks.
+
+    **What the boxes mean.** Each box is one checkable feature. `[x]` = last live pass in the real environment (running app, hosted service, real indexer, browser, and so on) succeeded. `[ ]` = not yet live-verified, or a later pass of that same feature failed. Unit tests are a gate, not a substitute for a live box.
+
+    **How to mark (per round).** A round covers only the boxes its code changes touch. Leave unrelated boxes as they are. Check a touched box after this round's live pass succeeds. Uncheck a touched box if this round's live pass of that feature fails. Do not uncheck an unrelated feature because this round did not re-run it. Do not require every box when the code changes did not touch every feature.
 
     1. If the file is missing, create it as soon as the project has behavior to verify. Do not wait for the user to ask.
     2. Keep one checklist. Agent contract files (`AGENTS.md` and similar) may point at `TESTING.md` with a short note. They must not copy the boxes.
     3. Put gates first (build, unit tests, smoke). Then per-feature live-verify boxes. Then a **Not features** list so agents do not test things that do not exist.
-    4. Check a box only after live verification in the real environment (running app, hosted service, real indexer, browser, and so on). Unit tests are a gate, not a substitute. Uncheck a box if a later pass fails.
-    5. When a feature is added, changed, or removed, update the matching boxes in the same round. Before declaring work done, read `TESTING.md` and cover the boxes the change touches.
+    4. Check a box only after live verification in the real environment. Unit tests are a gate, not a substitute. Uncheck a box if a later pass of that same feature fails.
+    5. When a feature is added, changed, or removed, update the matching boxes in the same round. Before declaring work done, read `TESTING.md` and cover **only** the boxes the change touches.
     6. Use generic property-based fixture names (`portrait.jpg`, `sample.txt`, `empty.txt`). Never put copyrighted titles, personal filenames, secrets, or AppKeys in this file.
 
 ## Recommended File Structure (Python example)

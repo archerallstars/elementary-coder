@@ -1,8 +1,10 @@
 # Feature testing outline
 
-Living checklist for this skill. Use it on every verification pass. Behavior lives in [SKILL.md](SKILL.md).
+Living checklist of **which skill behaviors are live-verified**. This is the cross-session, cross-agent tracker (a layer besides git). Behavior lives in [SKILL.md](SKILL.md).
 
-**How to mark.** Check a box when that behavior has been live-verified (install into a harness, or inspect the published files). Uncheck it if a later pass fails.
+**What the boxes mean.** Each box is one checkable feature. `[x]` = last live pass (install into a harness, or inspect the published files) succeeded. `[ ]` = not yet live-verified, or a later pass failed.
+
+**How to mark (per round).** A round covers only the boxes its changes touch. Leave unrelated boxes as they are. Check a touched box after this round's live pass succeeds. Uncheck a touched box if this round's live pass fails.
 
 **Generic fixture names.** This repo has no media kit. Do not put secrets or personal paths in this file.
 
@@ -13,6 +15,8 @@ Living checklist for this skill. Use it on every verification pass. Behavior liv
 - [x] Rule 24 Plan Model covers OpenCode SQL, Grok session context, and MiMoCode session DB
 - [x] MiMoCode DB path is portable (`XDG_DATA_HOME` / `~/.local/share` / `MIMOCODE_DB`)
 - [x] Rule 25 mandates a project-root `TESTING.md`
+- [x] Rule 25 states boxes are live-verified features (cross-session / cross-agent, besides git)
+- [x] Rule 25 per-round marking covers only boxes the code changes touch
 - [x] README install paths for Grok, OpenCode, and MiMoCode
 - [x] LICENSE is Unlicense
 
@@ -25,7 +29,7 @@ Living checklist for this skill. Use it on every verification pass. Behavior liv
 
 ## Commits (rule 24)
 
-- [ ] An agent commit from Grok records `Grok Build v…` from `grok --version`
+- [x] An agent commit from Grok records `Grok Build v…` from `grok --version`
 - [ ] An agent commit from OpenCode records `OpenCode v…` from `opencode --version`
 - [ ] An agent commit from MiMoCode records `MiMoCode v…` from `mimo --version`
 - [ ] Prompt Summary and Round Summary use the labeled block
