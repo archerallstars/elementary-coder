@@ -17,6 +17,9 @@ Living checklist of **which skill behaviors are live-verified**. This is the cro
 - [x] Rule 25 mandates a project-root `TESTING.md`
 - [x] Rule 25 states boxes are live-verified features (cross-session / cross-agent, besides git)
 - [x] Rule 25 per-round marking covers only boxes the code changes touch
+- [x] Rule 26 mandates a project-root `SECURITY.md`
+- [x] Rule 26: README links to `SECURITY.md`; no real secrets in that file
+- [x] This repo has a `SECURITY.md` (skill text only; no runtime credentials)
 - [x] README install paths for Grok, OpenCode, and MiMoCode
 - [x] LICENSE is Unlicense
 

@@ -1,11 +1,11 @@
 ---
 name: elementary-coder
-description: "Default coding standard for new scripts, refactors, and standardizing code from any AI model. Enforces descriptive naming, pervasive comments, strict file ordering, queueing for local I/O, and threading for concurrent work. Produces highly readable, self-documenting code in any language. Use when writing or editing code, implementing features, refactoring, completing skeletons/templates, or when the user runs /elementary-coder or asks to apply elementary-coder standards. Mandates a project-root TESTING.md living verification outline for every project."
+description: "Default coding standard for new scripts, refactors, and standardizing code from any AI model. Enforces descriptive naming, pervasive comments, strict file ordering, queueing for local I/O, and threading for concurrent work. Produces highly readable, self-documenting code in any language. Use when writing or editing code, implementing features, refactoring, completing skeletons/templates, or when the user runs /elementary-coder or asks to apply elementary-coder standards. Mandates a project-root TESTING.md living verification outline and a project-root SECURITY.md threat model for every project."
 ---
 
 # Elementary Coder
 
-Use this skill whenever you create new code, refactor existing code, or receive a skeleton/template from the user. The goal is extremely readable, self-documenting code with consistent structure that works across AI models and human readers. Every project must keep a living `TESTING.md` at the repository root (rule 25).
+Use this skill whenever you create new code, refactor existing code, or receive a skeleton/template from the user. The goal is extremely readable, self-documenting code with consistent structure that works across AI models and human readers. Every project must keep a living `TESTING.md` at the repository root (rule 25) and a living `SECURITY.md` at the repository root (rule 26).
 
 ## When to Use This Skill
 - Creating brand-new files from a description or loose requirements.
@@ -13,6 +13,7 @@ Use this skill whenever you create new code, refactor existing code, or receive 
 - User provides a skeleton, template, or partial code and says "implement", "port", "complete", or "standardize".
 - Any request that implies "make this easy to read", "add proper comments", or "make it consistent".
 - Creating or updating the project-root `TESTING.md` living verification outline.
+- Creating or updating the project-root `SECURITY.md` threat model.
 
 ## Core Principles
 Follow these rules on every file you generate or edit. They are language-agnostic; only the syntax of comments and keywords changes per language.
@@ -375,6 +376,15 @@ Comments are living documentation. Whenever you generate or modify code, you mus
     4. Check a box only after live verification in the real environment. Unit tests are a gate, not a substitute. Uncheck a box if a later pass of that same feature fails.
     5. When a feature is added, changed, or removed, update the matching boxes in the same round. Before declaring work done, read `TESTING.md` and cover **only** the boxes the change touches.
     6. Use generic property-based fixture names (`portrait.jpg`, `sample.txt`, `empty.txt`). Never put copyrighted titles, personal filenames, secrets, or AppKeys in this file.
+
+26. **Project-root SECURITY.md is mandatory**
+    Every project must keep a living `SECURITY.md` at the repository root. It is the threat model: what secrets exist, where they live, who can read them, and what the design does not protect against. Git history records code; `SECURITY.md` records how the project is meant to stay safe. Later sessions and other agents must read it instead of rediscovering the model from the code.
+
+    1. If the file is missing, create it as soon as the project has behavior to protect (credentials, auth, network, user data) or as soon as the repo is published. A project with no secrets still gets a short file that says so.
+    2. Never put real secrets, keys, tokens, or AppKeys in `SECURITY.md` (rule 23).
+    3. `SECURITY.md` is the canonical analysis. The README must link to it. If the analysis is long, the README holds a short summary only. If the analysis is short, the README may repeat that short text and still keep `SECURITY.md`.
+    4. Agent contract files (`AGENTS.md` and similar) may point at `SECURITY.md`. They must not copy the full analysis.
+    5. When auth, secret storage, or the threat model changes, update `SECURITY.md` in the same round.
 
 ## Recommended File Structure (Python example)
 

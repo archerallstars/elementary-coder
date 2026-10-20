@@ -1,6 +1,6 @@
 # Elementary Coder
 
-A coding-agent skill. It asks the model to write readable, self-documenting code: full names, living comments, explicit structure, and a project-root `TESTING.md` so later agents can see what is proven.
+A coding-agent skill. It asks the model to write readable, self-documenting code: full names, living comments, explicit structure, a project-root `TESTING.md` so later agents can see what is proven, and a project-root `SECURITY.md` so the threat model is written down.
 
 Works with **Grok**, **OpenCode**, and **MiMoCode**. Copy `SKILL.md` into the skills directory for the harness you use.
 
@@ -44,12 +44,15 @@ The full rules live in [SKILL.md](SKILL.md). In short:
 | 23 | Never put secrets in comments |
 | 24 | Every agent commit records harness + plan/build model + prompt/round summaries |
 | 25 | Living `TESTING.md`: live-verified feature boxes; a round covers only what it touched |
+| 26 | Living `SECURITY.md`: threat model at the repo root; README links to it |
 
 Rule 24 fills harness version from `opencode --version`, `grok --version`, or `mimo --version`, then records plan vs build model for that harness.
 
 Rule 25: boxes track live-verified features across sessions and agents (a layer besides git). A round covers only the boxes its code changes touch. Check a touched box after a live pass in the real environment. Unit tests are a gate. Use generic fixture names (`portrait.jpg`, `sample.txt`). Agent files such as `AGENTS.md` may point at `TESTING.md`; they must not copy the boxes.
 
-This repository’s own outline is [TESTING.md](TESTING.md).
+Rule 26: every project keeps `SECURITY.md` (what secrets exist, where they live, who can read them, known limits). Never put real secrets in that file. The README links to it; a long analysis stays in `SECURITY.md` with a short README summary. Update it in the same round as auth or secret-storage changes.
+
+This repository’s own outline is [TESTING.md](TESTING.md). Threat model: [SECURITY.md](SECURITY.md) (skill text only; no runtime credentials).
 
 ## License
 
