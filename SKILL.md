@@ -1,11 +1,11 @@
 ---
 name: elementary-coder
-description: "Default coding standard for new scripts, refactors, and standardizing code from any AI model. Enforces descriptive naming, pervasive comments, strict file ordering, queueing for local I/O, and threading for concurrent work. Produces highly readable, self-documenting code in any language. Use when writing or editing code, implementing features, refactoring, completing skeletons/templates, or when the user runs /elementary-coder or asks to apply elementary-coder standards. Mandates a project-root TESTING.md living verification outline and a project-root SECURITY.md threat model for every project."
+description: "Default coding standard for new scripts, refactors, and standardizing code from any AI model. Enforces descriptive naming, pervasive comments, strict file ordering, queueing for local I/O, and threading for concurrent work. Produces highly readable, self-documenting code in any language. Use when writing or editing code, implementing features, refactoring, completing skeletons/templates, or when the user runs /elementary-coder or asks to apply elementary-coder standards. Mandates a project-root TESTING.md living verification outline, a project-root SECURITY.md threat model, and docs/features living notes plus audit files (rule 27)."
 ---
 
 # Elementary Coder
 
-Use this skill whenever you create new code, refactor existing code, or receive a skeleton/template from the user. The goal is extremely readable, self-documenting code with consistent structure that works across AI models and human readers. Every project must keep a living `TESTING.md` at the repository root (rule 25) and a living `SECURITY.md` at the repository root (rule 26).
+Use this skill whenever you create new code, refactor existing code, or receive a skeleton/template from the user. The goal is extremely readable, self-documenting code with consistent structure that works across AI models and human readers. Every project must keep a living `TESTING.md` at the repository root (rule 25) and a living `SECURITY.md` at the repository root (rule 26). Application projects also keep living feature notes under `docs/features/` (rule 27).
 
 ## When to Use This Skill
 - Creating brand-new files from a description or loose requirements.
@@ -14,6 +14,7 @@ Use this skill whenever you create new code, refactor existing code, or receive 
 - Any request that implies "make this easy to read", "add proper comments", or "make it consistent".
 - Creating or updating the project-root `TESTING.md` living verification outline.
 - Creating or updating the project-root `SECURITY.md` threat model.
+- Creating or updating `docs/features/` living notes, `docs/researches/` notes, or audit files (`AUDIT-REPORT` / `BUG-REPORT` / `BUG-FIX`).
 
 ## Core Principles
 Follow these rules on every file you generate or edit. They are language-agnostic; only the syntax of comments and keywords changes per language.
@@ -385,6 +386,56 @@ Comments are living documentation. Whenever you generate or modify code, you mus
     3. `SECURITY.md` is the canonical analysis. The README must link to it. If the analysis is long, the README holds a short summary only. If the analysis is short, the README may repeat that short text and still keep `SECURITY.md`.
     4. Agent contract files (`AGENTS.md` and similar) may point at `SECURITY.md`. They must not copy the full analysis.
     5. When auth, secret storage, or the threat model changes, update `SECURITY.md` in the same round.
+
+27. **Living feature docs and audit files**
+    Application projects keep living notes under `docs/features/` and investigation notes under `docs/researches/`. These files are citation-stable for later agents and other models. They do not replace `TESTING.md` (live-verify boxes), `SECURITY.md` (threat model), or `AGENTS.md` / this skill (behavior contract).
+
+    Layout:
+
+    ```
+    docs/features/<slug>/<SLUG>.md
+    docs/features/<slug>/AUDIT-REPORT-<YYYY-MM-DD>-<model>-<8hex>.md
+    docs/features/<slug>/BUG-REPORT-<YYYY-MM-DD>-<model>-<8hex>.md
+    docs/features/<slug>/BUG-FIX-<YYYY-MM-DD>-<model>-<8hex>.md
+    docs/researches/<slug>/<SLUG>.md
+    ```
+
+    - Folder slug: lowercase kebab-case (`export`, `billing-model`).
+    - Feature and research markdown: the slug in uppercase, hyphens kept (`EXPORT.md`, `BILLING-MODEL.md`).
+    - Never use date-named directories for these notes.
+
+    **Feature doc (`<SLUG>.md`).** Create when a user-facing feature is added. Update in the same round when locked decisions, shipped files, or that feature's flags change. Required sections: one-line purpose; pointer to `AGENTS.md` (or equivalent) and `TESTING.md`; locked-decisions table; what shipped (paths + behavior); optional live-pass session notes (not a second checklist); related feature and research links.
+
+    A repo whose only deliverable is skill or docs text (`SKILL.md`) may omit `docs/features/`. Application projects must keep it.
+
+    **Research (`docs/researches/`).** Investigation, architecture notes, and findings that are not shipped behavior. Same folder and file naming as features.
+
+    **Audit files.** Write only on an audit pass (another model, or the same model reviewing existing work). One report file per feature folder. Split a multi-feature session. Bugs found and fixed in the same implementation round stay in code + `TESTING.md` + the feature doc; they do not get a report.
+
+    Outcome picks the prefix:
+
+    | Outcome | File | Follow-up |
+    |---|---|---|
+    | No bugs | `AUDIT-REPORT-<YYYY-MM-DD>-<model>-<8hex>.md` | None. State the feature was reviewed and is clean. |
+    | Bugs found | `BUG-REPORT-<YYYY-MM-DD>-<auditor>-<8hex>.md` | `BUG-FIX-<YYYY-MM-DD>-<fixer>-<8hex>.md` with the **same** `<8hex>`. |
+
+    Do not write an empty `BUG-REPORT` and a no-op `BUG-FIX`. Do not write `AUDIT-REPORT` and `BUG-REPORT` for the same pass.
+
+    - **Date:** UTC calendar day of the audit or of the fix (`YYYY-MM-DD`). REPORT and FIX dates may differ.
+    - **Model:** the rule-24 Plan/Build model ID of the model that wrote that file (auditor on `AUDIT-REPORT` / `BUG-REPORT`, fixer on `BUG-FIX`). Lowercase. Replace `/` and whitespace with `-`. Keep only `a-z`, `0-9`, `.`, `-`.
+    - **unique_id:** `openssl rand -hex 4` (8 lowercase hex). Minted once on the report. A `BUG-FIX` reuses that id. A later second audit of the same feature mints a new id.
+
+    Example:
+
+    ```
+    docs/features/export/EXPORT.md
+    docs/features/export/AUDIT-REPORT-2026-10-21-grok-4-6-build-c0ffee12.md
+    docs/features/export/BUG-REPORT-2026-10-21-mimo-v2.6-pro-a3f91c2b.md
+    docs/features/export/BUG-FIX-2026-10-22-grok-4-6-build-a3f91c2b.md
+    docs/researches/billing-model/BILLING-MODEL.md
+    ```
+
+    `TESTING.md` records live checks. Audit files record review. Feature docs record why and what shipped. Do not copy `TESTING.md` boxes into feature docs or audit files.
 
 ## Recommended File Structure (Python example)
 

@@ -22,6 +22,12 @@ Living checklist of **which skill behaviors are live-verified**. This is the cro
 - [x] This repo has a `SECURITY.md` (skill text only; no runtime credentials)
 - [x] README install paths for Grok, OpenCode, and MiMoCode
 - [x] LICENSE is Unlicense
+- [x] Rule 27 mandates `docs/features/<slug>/<SLUG>.md` and `docs/researches/` (no date-named directories)
+- [x] Rule 27: clean audit is `AUDIT-REPORT` with no fix file
+- [x] Rule 27: bugs are `BUG-REPORT` then `BUG-FIX` with the same 8-hex unique id
+- [x] Rule 27 unique_id is `openssl rand -hex 4`; model slug matches rule 24
+- [x] Rule 27 states audit files are not `TESTING.md` boxes
+- [x] Rule 27 lets a skill-only repo omit `docs/features/`
 
 ## Install
 
